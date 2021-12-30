@@ -16,13 +16,11 @@ class AccountServiceTest {
 
     @Mock
     AccountRepository accountRepository;
-
     AccountService accountService;
 
     @BeforeEach
     void setUp() {
         accountRepository = Mockito.mock(AccountRepository.class);
-
         accountService = new AccountService(accountRepository);
     }
 
@@ -34,9 +32,7 @@ class AccountServiceTest {
         long clientId = 1L;
         long contractNumber = 111L;
 
-
         when(accountRepository.getAllAccountsByClientId(clientId)).thenReturn(accounts);
-
         assertTrue(accountService.isClientHasContract(clientId, contractNumber));
     }
 
@@ -49,7 +45,6 @@ class AccountServiceTest {
         long contractNumber = 111L;
 
         when(accountRepository.getAllAccountsByClientId(clientId)).thenReturn(accounts);
-
         assertFalse(accountService.isClientHasContract(clientId, contractNumber));
     }
 
@@ -62,5 +57,20 @@ class AccountServiceTest {
     void serviceHasTreeMethods() {
         assertEquals(2, AccountService.class.getMethods().length - Object.class.getMethods().length);
     }
+
+    @Test
+    void isAccountAdded() {
+        long accountId = 111L;
+        when(accountRepository.getAccountById(accountId)).thenReturn(accountId);
+        assertTrue(accountService.isContractCreated(accountId));
+    }
+
+    @Test
+    void isAccountNotAdded() {
+        long accountId = 111L;
+        when(accountRepository.getAccountById(accountId)).thenReturn(null);
+        assertFalse(accountService.isContractCreated(accountId));
+    }
+
 
 }
