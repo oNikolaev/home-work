@@ -3,6 +3,8 @@ package com.sbrf.reboot.service;
 import com.sbrf.reboot.repository.AccountRepository;
 import lombok.NonNull;
 
+import java.io.IOException;
+
 
 public class AccountService {
     private AccountRepository accountRepository;
@@ -11,7 +13,7 @@ public class AccountService {
         this.accountRepository = accountRepository;
     }
 
-    public boolean isClientHasContract(@NonNull long clientId, @NonNull long contractNumber) {
+    public boolean isClientHasContract(@NonNull long clientId, @NonNull long contractNumber) throws IOException {
         return accountRepository.getAllAccountsByClientId(clientId).stream().anyMatch((contractNum) -> contractNum == contractNumber);
     }
 
