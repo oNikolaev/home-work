@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 
+import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -25,7 +26,7 @@ class AccountServiceTest {
     }
 
     @Test
-    void contractExist() {
+    void contractExist() throws IOException {
         Set<Long> accounts = new HashSet();
         accounts.add(111L);
 
@@ -37,7 +38,7 @@ class AccountServiceTest {
     }
 
     @Test
-    void contractNotExist() {
+    void contractNotExist() throws IOException {
         Set<Long> accounts = new HashSet();
         accounts.add(222L);
 
