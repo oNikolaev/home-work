@@ -1,6 +1,7 @@
 package com.sbrf.reboot.functionalinterface;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -32,7 +33,14 @@ public class FunctionalInterfaceTest {
             if (someObjects.isEmpty())
                 throw new IllegalArgumentException("The list is empty");
 
-            //add code here...
+            for (T element : someObjects) {
+                try {
+                    result.add(objectToJsonFunction.applyAsJson(element));
+                }
+                catch (JsonProcessingException e){
+                    e.printStackTrace();
+                }
+            }
 
             return result;
         }
@@ -42,18 +50,16 @@ public class FunctionalInterfaceTest {
     public void successCallFunctionalInterface() {
         ListConverter<SomeObject> ListConverter = new ListConverter<>();
 
-        ObjectToJsonFunction<SomeObject> objectToJsonFunction = someObject -> {
-            //add code here...
-            return null;
-        };
+        ObjectToJsonFunction<SomeObject> objectToJsonFunction = someObject ->
+            new ObjectMapper().writeValueAsString(someObject);
 
-        List<String> strings = ListConverter.toJsonsList(
-                Arrays.asList(
-                        new SomeObject("Object-1"),
-                        new SomeObject("Object-2")
-                ),
-                objectToJsonFunction
-        );
+            List<String> strings = ListConverter.toJsonsList(
+                    Arrays.asList(
+                            new SomeObject("Object-1"),
+                            new SomeObject("Object-2")
+                    ),
+                    objectToJsonFunction
+            );
 
         Assertions.assertTrue(strings.contains("{\"objectName\":\"Object-1\"}"));
         Assertions.assertTrue(strings.contains("{\"objectName\":\"Object-2\"}"));
